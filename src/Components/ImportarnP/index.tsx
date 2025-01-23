@@ -2,7 +2,8 @@ import { Carousel, Embla } from '@mantine/carousel';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState, useRef } from "react";
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { Card, Image, Divider, Title, ActionIcon, Group } from '@mantine/core';
+import { Card, Image, Title, ActionIcon, Group } from '@mantine/core';
+import ProductsU from '../ProductsU/Index';
 
 function ImportarnP() {
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -45,21 +46,17 @@ function ImportarnP() {
     const handleNext = () => embla && embla.scrollNext();
 
     const cards = [
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
-        { title: "texto", image: "https://www.extintoresromagnoli.com/imgs/productos/productos35_2489.jpg" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
+        { title: "texto", image: "https://media.assettype.com/eisamay/2024-10-26/072vkhry/100209239.jpg?w=640&auto=format,compress" },
     ];
 
     return (
         <>
-            <Group position='center'>
-                <Title mt='5%' mb='2%' order={1}>Productos Destacados</Title>
-            </Group>
-            <Divider my="sm" mx='sm' />
 
             <div
                 ref={componentRef}
@@ -94,18 +91,51 @@ function ImportarnP() {
                                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.5 }}
                             >
-                                <Card mr={10} p="lg" radius="lg">
-                                    <Image
-                                        src={card.image}
-                                        alt={card.title}
-                                        fit="contain"
-                                        radius="md"
-                                        width="100%"
-                                        height="100%"
-                                        style={{ objectFit: 'contain', maxHeight: '650px' }}
-                                    />
-                                    <Title ta="center" order={4}>{card.title}</Title>
+
+
+
+                                <Card mb={5} shadow="xl" p="lg" radius="md" style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                                    <Card.Section>
+                                        <Group
+                                            style={{
+                                                position: 'absolute',
+                                                top: '10px',
+                                                left: '0',
+                                                right: '0',
+                                                zIndex: 1,
+                                                justifyContent: 'space-between',
+                                                padding: '0 10px',
+                                            }}
+                                        >
+                                            <ProductsU  />
+                                        </Group>
+
+
+                                        <Image
+                                            src={card.image}
+                                            alt={card.title}
+                                            fit="contain"
+                                            style={{
+                                                width: '100%',
+                                                height: '500px',
+                                                objectFit: 'cover',
+                                                maxWidth: '100%',
+                                                margin: '0 auto',
+                                            }}
+                                        />
+
+                                    </Card.Section>
+
+                                    <Title order={6} style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '100%',
+                                    }}>
+
+                                    </Title>
                                 </Card>
+
                             </motion.div>
                         </Carousel.Slide>
                     ))}
@@ -148,7 +178,7 @@ function ImportarnP() {
                                     size="xl"
                                     radius="xl"
                                 >
-                                    <IconChevronLeft color='red' size={24} />
+                                    <IconChevronLeft color='blue' size={24} />
                                 </ActionIcon>
                             </motion.div>
 
@@ -172,7 +202,7 @@ function ImportarnP() {
                                     mr={15}
                                     radius="xl"
                                 >
-                                    <IconChevronRight color='red' size={24} />
+                                    <IconChevronRight color='blue' size={24} />
                                 </ActionIcon>
                             </motion.div>
                         </>

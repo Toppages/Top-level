@@ -39,8 +39,8 @@
 }
 
 .active-tab {
-  color: red;
-  border-bottom: 2px solid red;
+  color: blue;
+  border-bottom: 2px solid blue;
   position: relative;
   top: 2px;
 }

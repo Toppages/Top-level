@@ -45,22 +45,22 @@ function Footer() {
 
                     <Group position="center" spacing="xl" mr={25} mb={15}>
                         <ActionIcon radius="xl">
-                            <IconMapPin color="red" size={34} />
+                            <IconMapPin color="blue" size={34} />
                         </ActionIcon>
                         <ActionIcon radius="xl">
-                            <IconBrandFacebook color="red" size={34} />
+                            <IconBrandFacebook color="blue" size={34} />
                         </ActionIcon>
                         <ActionIcon radius="xl">
-                            <IconBrandWhatsapp color="red" size={34} />
+                            <IconBrandWhatsapp color="blue" size={34} />
                         </ActionIcon>
 
                         <ActionIcon radius="xl">
-                            <IconBrandInstagram color="red" size={34} />
+                            <IconBrandInstagram color="blue" size={34} />
                         </ActionIcon>
                     </Group>
 
                     <Text color="gray" size="xs" align="center" mt="xl">
-                        Copyright  &copy; 2025 Profire C.A. Todos los derechos reservados. Desarrollado por: Evanansemprun
+                        Copyright  &copy; 2025 Top level C.A. Todos los derechos reservados. Desarrollado por: Evanansemprun
                     </Text>
                 </Card>
             </div>

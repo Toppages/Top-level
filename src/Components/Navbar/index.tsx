@@ -1,62 +1,68 @@
 import Drawer from '../Drawer';
-import { useCart } from '../../CartContext';
-import { useMediaQuery } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
-import { IconUser, IconSearch } from '@tabler/icons-react';
-import { Group, Divider, ActionIcon, Indicator, Title } from '@mantine/core';
+import { useCart } from '../../CartContext';
+import { useState } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconUser,IconMenu2, IconSearch } from '@tabler/icons-react';
+import { Group, ActionIcon, Indicator, Title, Card } from '@mantine/core';
 
-function Navbar() {
-    const isMobile = useMediaQuery('(min-width: 1000px)');
+function Navbar({ setNavOpen }: { setNavOpen: (open: boolean) => void }) {
+    const isMobile = useMediaQuery('(max-width: 1000px)');
     const { cart } = useCart();
+    const [opened, setOpened] = useState(false);
+
+
+    const handleBurgerClick = () => {
+        setOpened((prev) => !prev);
+        setNavOpen(!opened);
+    };
 
     return (
         <>
-            <div style={{ width: '100%' }}>
+        <Card mx='sm' radius='md' mt={15}>
+
+            <Group position="apart" style={{ width: '100%' ,background:'white' }}>
                 <Drawer />
-                <Group position={isMobile ? "apart" : "center"} style={{ flexDirection: isMobile ? "row" : "column", width: "100%" }}>
 
-                    <Title mt='5%' style={{ display: isMobile ? "none" : "flex" }} mb='2%' order={1}>Top level</Title>
+                {!isMobile && (
+                     <ActionIcon mr={8} radius="xl" 
+                     onClick={handleBurgerClick}>
 
+                         <IconMenu2
+                         size={34}
+                         color='blue'
+                         />
+                     </ActionIcon>
+                )}
 
+                <Title order={1} style={{ marginBottom: 5, textAlign: isMobile ? 'left' : 'center' }}>
+                    Top level
+                </Title>
 
-                    {isMobile && (
-                        <>
-                            <Group spacing="xl" position="center">
-                                <Title ml={750} mt={15} mb='2%' order={1}>Top level</Title>
+                <Group spacing="lg" position="apart" style={{ width: 'auto' }}>
+                    <ActionIcon radius="xl">
+                        <IconSearch color="blue" size={34} />
+                    </ActionIcon>
 
-
-                            </Group>
-                        </>
-                    )}
-
-                    <Group align='end' mr={15} spacing="lg" position={isMobile ? "apart" : "center"}>
-
-                        <ActionIcon radius="xl">
-                            <IconSearch color="blue" size={34} />
-                        </ActionIcon>
-                        {cart.length > 0 ? (
-                            <Indicator label={cart.length} withBorder showZero={false} inline color="blue" overflowCount={999} size={20}>
-                                <Link to="/profierecalanding/Cart">
-                                    <ActionIcon mr={8} radius="xl">
-                                        <IconUser color="blue" size={34} />
-                                    </ActionIcon>
-                                </Link>
-                            </Indicator>
-                        ) : (
+                    {cart.length > 0 ? (
+                        <Indicator label={cart.length} withBorder showZero={false} inline color="blue" overflowCount={999} size={20}>
                             <Link to="/profierecalanding/Cart">
                                 <ActionIcon mr={8} radius="xl">
                                     <IconUser color="blue" size={34} />
                                 </ActionIcon>
                             </Link>
-
-                        )}
-                    </Group>
-
-
-
+                        </Indicator>
+                    ) : (
+                        <Link to="/profierecalanding/Cart">
+                            <ActionIcon mr={8} radius="xl">
+                                <IconUser color="blue" size={34} />
+                            </ActionIcon>
+                        </Link>
+                    )}
                 </Group>
-                <Divider mx='sm' />
-            </div>
+            </Group>
+        </Card>
+
         </>
     );
 }

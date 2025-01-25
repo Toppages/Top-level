@@ -44,3 +44,10 @@
   position: relative;
   top: 2px;
 }
+
+body {
+  background: #EEEEEE;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}

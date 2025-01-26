@@ -1,37 +1,57 @@
 import './App.css';
 import Home from './Home';
 import Navbar from './Components/Navbar';
+import Login from './Pages/Login';
 import { useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-function App() {
+function AppContent() {
   const [navOpen, setNavOpen] = useState(true);
-  const [activeLink, setActiveLink] = useState(0); 
+  const [activeLink, setActiveLink] = useState(1);
   const isMobile = useMediaQuery('(max-width: 1000px)');
+  const location = useLocation();
+  const isLoginRoute = location.pathname === '/Top-level/Login';
 
   return (
-    <Router>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {isMobile && <Navbar setNavOpen={setNavOpen} setActiveLink={setActiveLink} />}
+    <>
+      {isMobile && !isLoginRoute && (
+        <Navbar setNavOpen={setNavOpen} setActiveLink={setActiveLink} />
+      )}
 
-        <main style={{ flex: 1 }}>
-          <Routes>
-            <Route
-              path="/profierecalanding"
-              element={
-                <Home navOpen={navOpen} activeLink={activeLink} setActiveLink={setActiveLink} />
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <Home navOpen={navOpen} activeLink={activeLink} setActiveLink={setActiveLink} />
-              }
-            />
-          </Routes>
-        </main>
-      </div>
+      <main style={{ flex: 1 }}>
+        <Routes>
+          <Route path="/Top-level/login" element={<Login />} />
+          <Route
+            path="/Top-level"
+            element={
+              <Home
+                navOpen={navOpen}
+                activeLink={activeLink}
+                setActiveLink={setActiveLink}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Home
+                navOpen={navOpen}
+                activeLink={activeLink}
+                setActiveLink={setActiveLink}
+              />
+            }
+          />
+        </Routes>
+      </main>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

@@ -1,10 +1,11 @@
 import './App.css';
 import TableC from './Components/TableC/Index';
 import Reports from './Components/Reports';
-import { motion } from 'framer-motion';
+import NavLinkItem from './Components/Navlink';
+import useLazyLoad from './Hooks/useLazyLoad';
 import { useMediaQuery } from '@mantine/hooks';
-import { Card, Group, NavLink } from '@mantine/core';
-import { IconGauge, IconBuildingStore, IconReport } from '@tabler/icons-react';
+import { Card, Divider, Group, NavLink, Stack, Title } from '@mantine/core';
+import { IconGauge, IconBuildingStore, IconReport, IconUserFilled, IconX } from '@tabler/icons-react';
 
 interface HomeProps {
   navOpen: boolean;
@@ -20,33 +21,18 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
   ];
 
   const isMobile = useMediaQuery('(max-width: 1000px)');
+  const isVisible = useLazyLoad();
 
   const items = data.map((item, index) => (
-    <motion.div
-      key={`${item.label}-${navOpen}`}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.2, duration: 0.5 }}
-    >
-      <NavLink
-        variant="subtle"
-        color="indigo"
-        active={index === activeLink}
-        label={item.label}
-        icon={<item.icon size={20} stroke={1.5} />}
-        onClick={() => setActiveLink(index)}
-        disabled={item.label === 'Dashboard'}
-        style={{
-          padding: '10px 15px',
-          borderRadius: '8px',
-          marginBottom: '8px',
-          backgroundColor: index === activeLink ? '#EEF2FF' : 'transparent',
-          color: index === activeLink ? '#4F46E5' : '#4A5568',
-          cursor: item.label === 'Dashboard' ? 'not-allowed' : 'pointer',
-          opacity: item.label === 'Dashboard' ? 0.5 : 1,
-        }}
-      />
-    </motion.div>
+    <NavLinkItem
+      key={index}
+      index={index}
+      active={activeLink}
+      label={item.label}
+      icon={item.icon}
+      disabled={item.label === 'Dashboard'}
+      onClick={() => setActiveLink(index)}
+    />
   ));
 
   const renderContent = () => {
@@ -79,11 +65,60 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
             }}
             radius="md"
           >
-            {items}
+
+            <Stack justify="space-between" style={{ height: '90vh' }}>
+
+              <div>
+                <Title
+                  order={1}
+                  mb={15}
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  Top level
+                </Title>
+
+                {items}
+              </div>
+
+              <div>
+                <Divider />
+                <NavLink
+                  mt={15}
+                  label="User@user"
+                  color="indigo"
+                  icon={<IconUserFilled size={16} stroke={1.5} />}
+                  style={{
+                    padding: "10px 15px",
+                    borderRadius: "8px",
+                    marginBottom: "8px",
+                    cursor: "pointer",
+                  }}
+                />
+                <NavLink
+                  mt={15}
+                  label="Cerrar Sesión"
+                  color="indigo"
+                  icon={<IconX size={16} stroke={1.5} />}
+                  active
+                  style={{
+                    padding: "10px 15px",
+                    borderRadius: "8px",
+                    marginBottom: "8px",
+                    cursor: "pointer",
+                  }}
+                />
+              </div>
+            </Stack>
+
+
           </Card>
         )}
 
         <Card
+          id="lazy-load-card"
+          className={`lazy-load ${isVisible ? 'visible' : ''}`}
           radius="md"
           style={{
             flexGrow: 1,

@@ -94,9 +94,9 @@ function TableC() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nombre de la Colección</th>
+            <th>Colección</th>
             <th>Descripción</th>
-            <th>Cantidad de Productos</th>
+            <th>Productos</th>
             <th></th>
           </tr>
         </thead>

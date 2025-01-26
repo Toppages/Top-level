@@ -49,5 +49,16 @@ body {
   background: #EEEEEE;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 95vh;
+}
+
+.lazy-load {
+  opacity: 0;
+  transform: translateY(20px); 
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.lazy-load.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

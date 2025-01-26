@@ -6,14 +6,16 @@ import { ActionIcon, Modal, Table } from '@mantine/core';
 function TableC() {
   const [opened, setOpened] = useState(false);
   const [collections, setCollections] = useState<any[]>([]);
-  const [productDetails, setProductDetails] = useState<any | null>(null);
+  const [products, setProducts] = useState<any[]>([]);
+  const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
 
   useEffect(() => {
+
     const fetchCollections = async () => {
       try {
         const response = await axios.get('https://stock.hype.games/api/catalog/collections', {
           headers: {
-            Authorization: 'Bearer ACCESS-TOKEN-HERE', 
+            Authorization: 'Bearer ACCESS-TOKEN-HERE',
             'Content-Type': 'application/json',
           },
         });
@@ -26,18 +28,19 @@ function TableC() {
     fetchCollections();
   }, []);
 
-  const fetchProductDetails = async (productId: number) => {
+  const fetchProducts = async (collectionId: number) => {
     try {
-      const response = await axios.get(`https://stock.hype.games/api/catalog/products/${productId}`, {
+      const response = await axios.get(`https://stock.hype.games/api/catalog/collections/${collectionId}`, {
         headers: {
-          Authorization: 'Bearer ACCESS-TOKEN-HERE', 
+          Authorization: 'Bearer ACCESS-TOKEN-HERE',
           'Content-Type': 'application/json',
         },
       });
-      setProductDetails(response.data);
-      setOpened(true); 
+      setProducts(response.data.products);
+      setSelectedCollection(response.data.name);
+      setOpened(true);
     } catch (error) {
-      console.error('Error fetching product details:', error);
+      console.error('Error fetching products:', error);
     }
   };
 
@@ -48,10 +51,20 @@ function TableC() {
       <td>{collection.description || 'N/A'}</td>
       <td>{collection.products.length}</td>
       <td>
-        <ActionIcon onClick={() => fetchProductDetails(collection.products[0]?.id)} color="indigo" size="lg" variant="filled">
+        <ActionIcon onClick={() => fetchProducts(collection.id)} color="indigo" size="lg" variant="filled">
           <IconAdjustments size={26} />
         </ActionIcon>
       </td>
+    </tr>
+  ));
+
+  const productRows = products.map((product) => (
+    <tr key={product.id}>
+      <td>{product.id}</td>
+      <td>{product.name}</td>
+      <td>{product.description}</td>
+      <td>{product.salesPrice}</td>
+
     </tr>
   ));
 
@@ -60,28 +73,30 @@ function TableC() {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title={productDetails ? productDetails.name : 'Cargando...'}
+        title={selectedCollection || 'Productos'}
+        size="lg"
       >
-        {productDetails ? (
-          <div>
-            <img src={productDetails.image} alt={productDetails.name} style={{ width: '100%' }} />
-            <p>{productDetails.description}</p>
-            <p><strong>Price: </strong>{productDetails.salesPrice} {productDetails.salesCurrencySymbol}</p>
-            <p><strong>How to Redeem: </strong>{productDetails.howToRedeem}</p>
-            <p><strong>Terms and Conditions: </strong>{productDetails.termsAndConditions}</p>
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}
+        <Table striped highlightOnHover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre del Producto</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+
+            </tr>
+          </thead>
+          <tbody>{productRows}</tbody>
+        </Table>
       </Modal>
 
       <Table striped highlightOnHover>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Collection Name</th>
-            <th>Description</th>
-            <th>Products Count</th>
+            <th>Nombre de la Colección</th>
+            <th>Descripción</th>
+            <th>Cantidad de Productos</th>
             <th></th>
           </tr>
         </thead>

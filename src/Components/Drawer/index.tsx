@@ -1,83 +1,80 @@
-import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { useMediaQuery } from '@mantine/hooks';
-import { Drawer as MantineDrawer, Burger, Text, Container } from '@mantine/core';
+import { useMediaQuery } from "@mantine/hooks";
+import {
+  Drawer as MantineDrawer,
+  Burger,
+  Container,
+  NavLink,
+} from "@mantine/core";
+import { motion } from "framer-motion";
+import { IconGauge, IconBuildingStore, IconReport } from "@tabler/icons-react";
 
-function Drawer() {
+function Drawer({ setActiveLink }: { setActiveLink: (index: number) => void }) {
     const [opened, setOpened] = useState(false);
-    const isMobile = useMediaQuery('(min-width: 1000px)');
-    const location = useLocation();
-    const closeDrawer = () => setOpened(false);
-
-    const getLinkStyle = (path: string) => ({
-        color: location.pathname === path ? 'red' : 'black',
-        borderBottom: location.pathname === path ? '2px solid red' : 'none',
-        textDecoration: 'none',
-        outline: 'none'
-    });
-
+    const [active, setActive] = useState(0);
+    const isMobile = useMediaQuery("(min-width: 1000px)");
+  
+    const data = [
+      { icon: IconGauge, label: "Dashboard" },
+      { icon: IconBuildingStore, label: "Productos" },
+      { icon: IconReport, label: "Reportes" },
+    ];
+  
+    const items = data.map((item, index) => (
+      <motion.div
+        key={`${item.label}-${opened}`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.2, duration: 0.5 }}
+      >
+        <NavLink
+          variant="subtle"
+          color="indigo"
+          active={index === active}
+          label={item.label}
+          disabled={item.label === 'Dashboard'}
+          icon={<item.icon size={20} stroke={1.5} />}
+          onClick={() => {
+            setActive(index);
+            setActiveLink(index); 
+            setOpened(false);
+          }}
+          style={{
+            padding: "10px 15px",
+            borderRadius: "8px",
+            marginBottom: "8px",
+            backgroundColor: index === active ? "#EEF2FF" : "transparent",
+            color: index === active ? "#4F46E5" : "#4A5568",
+          }}
+        />
+      </motion.div>
+    ));
+  
     return (
-        <>
-            {!isMobile && (
-                <Burger
-                    opened={opened}
-                    onClick={() => setOpened((o) => !o)}
-                    title={opened ? 'Close navigation' : 'Open navigation'}
-                />
-            )}
-
-            <MantineDrawer
-                opened={opened}
-                onClose={() => setOpened(false)}
-                padding="xl"
-                size="lg"
-                position="left"
-                overlayOpacity={0.55}
-                overlayBlur={3}
-            >
-                <Container mt={15} style={{ display: 'flex'}}>
-                    <div>
-                        <Link
-                            to="/profierecalanding/Catalogo"
-                            style={getLinkStyle('/profierecalanding/Catalogo')}
-                            onClick={closeDrawer}
-                        >
-                            <Text mr={15} fw={700}>
-                                Catalogo
-                            </Text>
-                        </Link>
-                        <Link
-                            to="/profierecalanding/Nosotros"
-                            style={getLinkStyle('/profierecalanding/Nosotros')}
-                            onClick={closeDrawer}
-                        >
-                            <Text mt={15} fw={700}>
-                                Nuestra empresa
-                            </Text>
-                        </Link>
-                        <Link
-                            to="/profierecalanding/contacto"
-                            style={getLinkStyle('/profierecalanding/contacto')}
-                            onClick={closeDrawer}
-                        >
-                            <Text mt={15} fw={700}>
-                                Contactanos
-                            </Text>
-                        </Link>
-                        <Link
-                            to="/profierecalanding/Servicio"
-                            style={getLinkStyle('/profierecalanding/Servicio')}
-                            onClick={closeDrawer}
-                        >
-                            <Text mt={15} fw={700}>
-                                Servicios
-                            </Text>
-                        </Link>
-                    </div>
-                </Container>
-            </MantineDrawer>
-        </>
+      <>
+        {!isMobile && (
+          <Burger
+            opened={opened}
+            onClick={() => setOpened((o) => !o)}
+            title={opened ? "Cerrar navegación" : "Abrir navegación"}
+          />
+        )}
+  
+        <MantineDrawer
+          opened={opened}
+          onClose={() => setOpened(false)}
+          padding="xl"
+          size="lg"
+          position="left"
+          overlayOpacity={0.55}
+          overlayBlur={3}
+        >
+          <Container mt={15} style={{ display: "flex", flexDirection: "column" }}>
+            {items}
+          </Container>
+        </MantineDrawer>
+      </>
     );
-}
-
-export default Drawer;
+  }
+  
+  export default Drawer;

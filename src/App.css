@@ -16,34 +16,6 @@
   }
 }
 
-.tab-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.tab {
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-bottom: 2px solid transparent;
-  transition: background-color 0.3s #ccc;
-}
-
-.tab:hover {
-  color: red;
-  background-color: #f0f0f0;
-}
-
-.active-tab {
-  color: blue;
-  border-bottom: 2px solid blue;
-  position: relative;
-  top: 2px;
-}
 
 body {
   background: #EEEEEE;
@@ -61,4 +33,15 @@ body {
 .lazy-load.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.button {
+  background: #0c2a85;
+  color: white;
+  transition: background 0.3s ease; 
+}
+.button:hover {
+  background: white;
+  color: #0c2a85;
+  cursor: pointer;
 }

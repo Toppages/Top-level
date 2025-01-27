@@ -37,14 +37,28 @@ function NavLinkItem({
           padding: "10px 15px",
           borderRadius: "8px",
           marginBottom: "8px",
-          backgroundColor: index === active ? "#EEF2FF" : "transparent",
-          color: index === active ? "#4F46E5" : "#4A5568",
+          backgroundColor: index === active ? "#0c2a85" : "transparent",
+          color: index === active ? "white" : "#0c2a85",
           cursor: disabled ? "not-allowed" : "pointer",
           opacity: disabled ? 0.5 : 1,
+          transition: "background-color 0.3s ease, color 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          if (!disabled && index !== active) {
+            e.currentTarget.style.backgroundColor = "#dbe4f3"; 
+            e.currentTarget.style.color = "#0c2a85"; 
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!disabled && index !== active) {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "#0c2a85"; 
+          }
         }}
       />
     </motion.div>
   );
 }
+
 
 export default NavLinkItem;

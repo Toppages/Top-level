@@ -24,7 +24,7 @@ function Reports() {
     }
 
     try {
-      setError(null); 
+      setError(null);
       const response = await axios.get(
         `https://stock.hype.games/api/report/${formattedStartDate}/${formattedFinishDate}`,
         {
@@ -34,7 +34,7 @@ function Reports() {
           },
         }
       );
-      setReports(response.data); 
+      setReports(response.data);
     } catch (error) {
       console.error('Error fetching reports:', error);
       setError('Hubo un error al obtener los reportes.');
@@ -49,28 +49,39 @@ function Reports() {
       <td>{report.salesPrice}</td>
       <td>{report.status}</td>
       <td>{report.transactionDate}</td>
-      <td>
-        <span>{report.keySentToCustomer ? 'Enviado' : 'No enviado'}</span>
-      </td>
+      <td>{report.keySentToCustomer ? 'Enviado' : 'No enviado'}</td>
     </tr>
   ));
 
   return (
-    <>
-    <div style={{
-      
-      height: '89.5vh',
-    }}>
+    <div
+      style={{
+        padding: '1rem',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+      }}
+    >
+      <Title ta="center" weight={700} mb="md" order={2}>
+        Reportes de Ventas por Período
+      </Title>
 
-
-      <Title ta='center' weight={700} mb="md" order={2}>Reportes de Ventas por Período</Title>
-
-     <Group position='center'  mb="md" >
-
+      <Group
+        mb="md"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          justifyContent: 'center',
+        }}
+      >
         <DatePicker
           placeholder="Fecha de inicio"
           label="Inicio"
           value={startDate}
+          style={{ flex: '1 1 300px' }}
           radius="md"
           size="lg"
           onChange={setStartDate}
@@ -79,17 +90,18 @@ function Reports() {
           placeholder="Fecha de fin"
           label="Fin"
           value={finishDate}
+          style={{ flex: '1 1 300px' }}
           radius="md"
           size="lg"
           onChange={setFinishDate}
         />
-     </Group>
-     <Group position='center'  mb="md" >
+      </Group>
 
-        <Button onClick={fetchReports} color="indigo">
+      <Group position="center" mb="md">
+        <Button radius="lg"className='button' size="lg" onClick={fetchReports}>
           Obtener Reportes
         </Button>
-     </Group>
+      </Group>
 
       {error && (
         <Text color="red" mb="md">
@@ -97,8 +109,15 @@ function Reports() {
         </Text>
       )}
 
-      {reports.length > 0 ? (
-        <Table striped highlightOnHover>
+    
+        <Table
+          striped
+          highlightOnHover
+          style={{
+            overflowX: 'auto',
+            fontSize: '0.9rem',
+          }}
+        >
           <thead>
             <tr>
               <th>ID Transacción</th>
@@ -112,12 +131,8 @@ function Reports() {
           </thead>
           <tbody>{reportRows}</tbody>
         </Table>
-      ) : (
-        <>
-        </>
-      )}
+     
     </div>
-    </>
   );
 }
 

@@ -8,7 +8,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: blue;
+    background:  #0c2a85;
     border-radius: 50px;
 }
 
@@ -17,11 +17,11 @@ body {
 }
 
 html {
-    scrollbar-color: blue #f1f1f1;  
+    scrollbar-color:  #0c2a85 #f1f1f1;  
     scrollbar-width: thin;
 }
 .active-link {
-    color: blue;
+    color:  #0c2a85;
     text-decoration: underline;
     text-decoration-thickness: 3px;
     transition: all 0.3s ease-in-out;

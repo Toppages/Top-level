@@ -39,10 +39,10 @@ function Drawer({ setActiveLink }: { setActiveLink: (index: number) => void }) {
       }}
     />
   ));
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    navigate('/Top-level/Login');
+    navigate('/Top-level');
   };
   return (
     <>
@@ -66,14 +66,14 @@ function Drawer({ setActiveLink }: { setActiveLink: (index: number) => void }) {
         <Stack justify="space-between" style={{ height: '90vh' }}>
 
           <div>
-          
-   <div style={{ width: 150, marginLeft: 'auto', marginRight: 'auto' }}>
-            <Image
-              mt={-55}
-              src={Logo}
-              alt="Panda"
-            />
-   </div>
+
+            <div style={{ width: 150, marginLeft: 'auto', marginRight: 'auto' }}>
+              <Image
+                mt={-55}
+                src={Logo}
+                alt="Panda"
+              />
+            </div>
 
             {items}
           </div>

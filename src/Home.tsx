@@ -24,8 +24,10 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/Top-level/Login');
+    localStorage.removeItem('accessToken');
+    navigate('/Top-level');
   };
+
   const isMobile = useMediaQuery('(max-width: 1000px)');
   const isVisible = useLazyLoad();
 
@@ -128,15 +130,13 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = "#dbe4f3";
                     e.currentTarget.style.color = "#0c2a85";
-
                   }}
                   onMouseLeave={(e) => {
-
                     e.currentTarget.style.backgroundColor = "transparent";
                     e.currentTarget.style.color = "#0c2a85";
-
                   }}
                 />
+
               </div>
             </Stack>
 

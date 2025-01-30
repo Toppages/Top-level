@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, Group, Table, Text, Title } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 
@@ -8,6 +8,8 @@ function Reports() {
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [reports, setReports] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const accessToken = localStorage.getItem('accessToken');
 
   const fetchReports = async () => {
     if (!startDate || !finishDate) {
@@ -23,21 +25,26 @@ function Reports() {
       return;
     }
 
+    if (!accessToken) {
+      setError('No se encontró el token de acceso. Por favor, inicia sesión.');
+      return;
+    }
+
     try {
       setError(null);
       const response = await axios.get(
-        `https://stock.hype.games/api/report/${formattedStartDate}/${formattedFinishDate}`,
+        `/api/report/${formattedStartDate}/${formattedFinishDate}`,
         {
           headers: {
-            Authorization: 'Bearer ACCESS-TOKEN-HERE',
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
         }
       );
       setReports(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching reports:', error);
-      setError('Hubo un error al obtener los reportes.');
+      setError('Hubo un error al obtener los reportes. Intenta nuevamente.');
     }
   };
 
@@ -52,6 +59,16 @@ function Reports() {
       <td>{report.keySentToCustomer ? 'Enviado' : 'No enviado'}</td>
     </tr>
   ));
+
+  const authenticate = useCallback(async () => {
+    if (!accessToken) {
+      console.error('No token found, please login');
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    authenticate();
+  }, [authenticate]);
 
   return (
     <div
@@ -98,7 +115,7 @@ function Reports() {
       </Group>
 
       <Group position="center" mb="md">
-        <Button radius="lg"className='button' size="lg" onClick={fetchReports}>
+        <Button radius="lg" className="button" size="lg" onClick={fetchReports}>
           Obtener Reportes
         </Button>
       </Group>
@@ -109,29 +126,27 @@ function Reports() {
         </Text>
       )}
 
-    
-        <Table
-          striped
-          highlightOnHover
-          style={{
-            overflowX: 'auto',
-            fontSize: '0.9rem',
-          }}
-        >
-          <thead>
-            <tr>
-              <th>ID Transacción</th>
-              <th>Referencia</th>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Estado</th>
-              <th>Fecha</th>
-              <th>Clave Enviada</th>
-            </tr>
-          </thead>
-          <tbody>{reportRows}</tbody>
-        </Table>
-     
+      <Table
+        striped
+        highlightOnHover
+        style={{
+          overflowX: 'auto',
+          fontSize: '0.9rem',
+        }}
+      >
+        <thead>
+          <tr>
+            <th>ID Transacción</th>
+            <th>Referencia</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Clave Enviada</th>
+          </tr>
+        </thead>
+        <tbody>{reportRows}</tbody>
+      </Table>
     </div>
   );
 }

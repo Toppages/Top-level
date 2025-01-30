@@ -1,14 +1,23 @@
 import axios from 'axios';
-import { IconEye, IconShoppingBag } from '@tabler/icons-react';
-import { ActionIcon, Modal, Table, Loader } from '@mantine/core';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import ProductModal from '../ProductModal/Index'; 
+import { IconShoppingBag, IconEye } from '@tabler/icons-react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { ActionIcon, Modal, Table, Loader, Divider, Title } from '@mantine/core';
 
 function TableC() {
   const [opened, setOpened] = useState(false);
   const [collections, setCollections] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null); 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
+  const [productLoading, setProductLoading] = useState<boolean>(false); 
   const accessToken = localStorage.getItem('accessToken');
+
+  const country = 'CO';
+  const currency = 'COP';
+  const language = 'es-CO';
 
   const authenticate = useCallback(async () => {
     if (!accessToken) {
@@ -16,19 +25,6 @@ function TableC() {
       return;
     }
   }, [accessToken]);
-
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
-
-  const country = 'CO';
-  const currency = 'COP';
-  const language = 'es-CO';
-
-
-
-  useEffect(() => {
-    authenticate();
-  }, [authenticate]);
 
   const fetchCollections = useCallback(async () => {
     if (!accessToken) return;
@@ -47,10 +43,6 @@ function TableC() {
       setLoading(false);
     }
   }, [accessToken]);
-
-  useEffect(() => {
-    if (accessToken) fetchCollections();
-  }, [accessToken, fetchCollections]);
 
   const fetchProducts = useCallback(async (collectionId: number) => {
     if (!accessToken) return;
@@ -72,13 +64,39 @@ function TableC() {
     }
   }, [accessToken]);
 
+  const fetchProductDetails = useCallback(async (productId: number) => {
+    if (!accessToken) return;
+
+    setProductLoading(true);
+
+    try {
+      const { data } = await axios.get(`/api/catalog/products/${productId}`, {
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        params: { country, currency, language },
+      });
+      setSelectedProduct(data);
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    } finally {
+      setProductLoading(false);
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    authenticate();
+  }, [authenticate]);
+
+  useEffect(() => {
+    if (accessToken) fetchCollections();
+  }, [accessToken, fetchCollections]);
+
   const rows = useMemo(() => collections.map(({ id, name, products }) => (
     <tr key={id}>
       <td style={{ textAlign: "center" }}>{id}</td>
       <td style={{ textAlign: "center" }}>{name}</td>
       <td style={{ textAlign: "center" }}>{products.length}</td>
       <td>
-        <ActionIcon onClick={() => fetchProducts(id)} color="indigo" size="lg" variant="filled">
+        <ActionIcon onClick={() => fetchProducts(id)} style={{ background: "#0c2a85" }} size="lg" variant="filled">
           <IconEye size={26} />
         </ActionIcon>
       </td>
@@ -87,20 +105,39 @@ function TableC() {
 
   const productRows = useMemo(() => products.map(({ id, name, salesPrice }) => (
     <tr key={id}>
-
       <td style={{ textAlign: "center" }}>{name}</td>
       <td style={{ textAlign: "center" }}>{salesPrice} Cop</td>
       <td>
-        <ActionIcon color="indigo" size="lg" variant="filled">
+        <ActionIcon
+          onClick={() => {
+            fetchProductDetails(id);
+            setOpened(false);
+          }}
+          style={{ background: "#0c2a85" }}
+          size="lg"
+          variant="filled"
+        >
           <IconShoppingBag size={26} />
         </ActionIcon>
-      </td> 
+      </td>
     </tr>
-  )), [products]);
+  )), [products, fetchProductDetails]);
 
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)} title={selectedCollection || 'Productos'} size="xl">
+      <ProductModal
+        opened={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        product={selectedProduct}
+        loading={productLoading}
+      />
+
+      <Modal opened={opened} onClose={() => setOpened(false)} withCloseButton={false} size="xl">
+
+        <Title ta="center" order={3} style={{ fontWeight: 700, color: '#333' }}>
+          {selectedCollection || 'Productos'}
+        </Title>
+        <Divider my="sm" variant="dashed" style={{ borderColor: '#ddd' }} />
         <Table striped highlightOnHover>
           <thead>
             <tr>

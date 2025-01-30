@@ -152,10 +152,12 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
             flexGrow: 1,
             padding: '20px',
             boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            height: data[activeLink].label === 'Reportes' ? '95vh' : 'auto',
           }}
         >
           {renderContent()}
         </Card>
+
       </Group>
     </>
   );

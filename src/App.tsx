@@ -15,7 +15,7 @@ function AppContent() {
 
   return (
     <>
-      {!isMobile && !isLoginRoute && (
+      {isMobile && !isLoginRoute && (
         <Navbar setNavOpen={setNavOpen} setActiveLink={setActiveLink} />
       )}
 

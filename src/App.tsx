@@ -21,7 +21,7 @@ function AppContent() {
 
       <main style={{ flex: 1 }}>
         <Routes>
-          <Route path="/Top-level/" element={<Login />} />
+          <Route path="/Top-level" element={<Login />} />
           <Route
             path="/Top-level/Home"
             element={

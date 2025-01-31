@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ProductModal from '../ProductModal/Index'; 
+import ProductModal from '../ProductModal/Index';
 import { IconShoppingBag, IconEye } from '@tabler/icons-react';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ActionIcon, Modal, Table, Loader, Divider, Title } from '@mantine/core';
@@ -9,10 +9,10 @@ function TableC() {
   const [collections, setCollections] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null); 
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
-  const [productLoading, setProductLoading] = useState<boolean>(false); 
+  const [productLoading, setProductLoading] = useState<boolean>(false);
   const accessToken = localStorage.getItem('accessToken');
 
   const country = 'CO';
@@ -74,13 +74,16 @@ function TableC() {
         headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         params: { country, currency, language },
       });
+
       setSelectedProduct(data);
+      setOpened(false);
     } catch (error) {
       console.error('Error fetching product details:', error);
     } finally {
       setProductLoading(false);
     }
   }, [accessToken]);
+
 
   useEffect(() => {
     authenticate();
@@ -103,25 +106,28 @@ function TableC() {
     </tr>
   )), [collections, fetchProducts]);
 
-  const productRows = useMemo(() => products.map(({ id, name, salesPrice }) => (
-    <tr key={id}>
-      <td style={{ textAlign: "center" }}>{name}</td>
-      <td style={{ textAlign: "center" }}>{salesPrice} Cop</td>
-      <td>
-        <ActionIcon
-          onClick={() => {
-            fetchProductDetails(id);
-            setOpened(false);
-          }}
-          style={{ background: "#0c2a85" }}
-          size="lg"
-          variant="filled"
-        >
-          <IconShoppingBag size={26} />
-        </ActionIcon>
-      </td>
-    </tr>
-  )), [products, fetchProductDetails]);
+  const productRows = useMemo(() =>
+    [...products]
+      .sort((a, b) => a.salesPrice - b.salesPrice)
+      .map(({ id, name, salesPrice }) => (
+        <tr key={id}>
+          <td style={{ textAlign: "center" }}>{name}</td>
+          <td style={{ textAlign: "center" }}>{salesPrice} Cop</td>
+          <td>
+            <ActionIcon
+              onClick={() => fetchProductDetails(id)}
+              style={{ background: "#0c2a85" }}
+              size="lg"
+              variant="filled"
+            >
+              <IconShoppingBag size={26} />
+            </ActionIcon>
+          </td>
+        </tr>
+      )),
+    [products, fetchProductDetails]
+  );
+
 
   return (
     <>
@@ -142,7 +148,7 @@ function TableC() {
           <thead>
             <tr>
               <th style={{ textAlign: "center" }}>Nombre del Producto</th>
-              <th style={{ textAlign: "center" }}>Precio</th>
+              <th style={{ textAlign: "center" }}>Precio de venta</th>
               <th style={{ textAlign: "center" }}></th>
             </tr>
           </thead>

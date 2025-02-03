@@ -25,7 +25,7 @@ function Home({ navOpen, activeLink, setActiveLink }: HomeProps) {
 
   const handleLogin = () => {
     localStorage.removeItem('accessToken');
-    navigate('/Top-level');
+    navigate('/');
   };
 
   const isMobile = useMediaQuery('(max-width: 1000px)');

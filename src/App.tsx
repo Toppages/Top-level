@@ -11,29 +11,20 @@ function AppContent() {
   const [activeLink, setActiveLink] = useState(1);
   const isMobile = useMediaQuery('(max-width: 1000px)');
   const location = useLocation();
-  const isLoginRoute = location.pathname === '/Top-level';
+
+  const isLoginPage = location.pathname === "/";
 
   return (
     <>
-      {isMobile && !isLoginRoute && (
+      {isMobile && !isLoginPage && (
         <Navbar setNavOpen={setNavOpen} setActiveLink={setActiveLink} />
       )}
 
       <main style={{ flex: 1 }}>
         <Routes>
-          <Route path="/Top-level" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route
-            path="/Top-level/Home"
-            element={
-              <Home
-                navOpen={navOpen}
-                activeLink={activeLink}
-                setActiveLink={setActiveLink}
-              />
-            }
-          />
-          <Route
-            path="*"
+            path="/Home"
             element={
               <Home
                 navOpen={navOpen}

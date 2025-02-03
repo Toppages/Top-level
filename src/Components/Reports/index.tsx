@@ -33,7 +33,7 @@ function Reports() {
     try {
       setError(null);
       const response = await axios.get(
-        `/api/report/${formattedStartDate}/${formattedFinishDate}`,
+        `https://proxy.paginaswebstop.workers.dev/report/${formattedStartDate}/${formattedFinishDate}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

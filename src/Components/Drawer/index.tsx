@@ -42,7 +42,7 @@ function Drawer({ setActiveLink }: { setActiveLink: (index: number) => void }) {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/Top-level');
+    navigate('/');
   };
   return (
     <>

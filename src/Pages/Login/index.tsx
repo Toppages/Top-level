@@ -17,7 +17,7 @@ function Login() {
     setError('');
 
     try {
-      const { data } = await axios.post('/api/auth', {
+      const { data } = await axios.post('https://proxy.paginaswebstop.workers.dev/auth', {
         identifier: username,
         secret: password,
       }, {
@@ -26,7 +26,7 @@ function Login() {
 
       if (data.isAuthenticated) {
         localStorage.setItem('accessToken', data.accessToken);
-        navigate('/Top-level/Home');
+        navigate('/Home');
       } else {
         setError('Credenciales incorrectas');
       }

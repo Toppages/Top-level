@@ -94,7 +94,6 @@ function TableC() {
         <tr key={id}>
           <td style={{ textAlign: 'center' }}>{id}</td>
           <td style={{ textAlign: 'center' }}>{name}</td>
-          <td style={{ textAlign: 'center' }}>{products.length}</td>
           <td>
             <ActionIcon onClick={() => fetchProducts(id)} style={{ background: '#0c2a85' }} size="lg" variant="filled">
               <IconEye size={26} />
@@ -149,7 +148,6 @@ function TableC() {
           <tr>
             <th style={{ textAlign: 'center' }}>ID</th>
             <th style={{ textAlign: 'center' }}>Colección</th>
-            <th style={{ textAlign: 'center' }}>Productos</th>
             <th style={{ textAlign: 'center' }}></th>
           </tr>
         </thead>
